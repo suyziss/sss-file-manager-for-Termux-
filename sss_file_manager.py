@@ -12,13 +12,13 @@ import termios
 import tty
 from pathlib import Path
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 RESET = "\033[0m"
 DIM = "\033[2m"
 BOLD = "\033[1m"
 CYAN = "\033[36m"
 REVERSE = "\033[7m"
-CLEAR = "\033[2J\033[H"
+CLEAR = "\033[H\033[2J"
 
 
 def read_key() -> str:
@@ -129,7 +129,7 @@ class FileManager:
         if self.original_terminal is not None:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, self.original_terminal)
             self.original_terminal = None
-            sys.stdout.write("\033[?25h")
+            sys.stdout.write("\033[?25h\033[?1049l")
             sys.stdout.flush()
 
     def enter_terminal(self):
@@ -138,7 +138,7 @@ class FileManager:
         if self.original_terminal is None:
             self.original_terminal = termios.tcgetattr(sys.stdin.fileno())
             tty.setraw(sys.stdin.fileno())
-            sys.stdout.write("\033[?25l")
+            sys.stdout.write("\033[?1049h\033[2J\033[H\033[?25l")
             sys.stdout.flush()
 
     def prompt(self, label: str, default: str = "") -> str:
