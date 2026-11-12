@@ -326,7 +326,7 @@ def install_command() -> int:
     script = Path(__file__).resolve()
     python = Path(sys.executable).resolve()
     content = (
-        "#!/data/data/com.termux/files/usr/bin/sh\n"
+        "#!/system/bin/sh\n"
         "# SSS File Manager launcher\n"
         f"exec {shlex.quote(str(python))} {shlex.quote(str(script))} \"$@\"\n"
     )
